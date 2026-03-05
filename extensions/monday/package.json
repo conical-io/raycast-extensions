@@ -42,23 +42,26 @@
     },
     {
       "name": "quickAddItem",
-      "title": "Quick-add an Item",
+      "title": "Quick-Add an Item",
       "subtitle": "monday.com",
       "description": "Adds an item to a pre-defined board",
       "mode": "view",
       "keywords": [
         "add",
         "item"
-      ],
-      "preferences": [
-        {
-          "name": "quickAddBoardId",
-          "type": "textfield",
-          "required": true,
-          "title": "Board ID",
-          "description": "ID of the board to quick-add items to",
-          "placeholder": "00000000"
-        }
+      ]
+    },
+    {
+      "name": "configureQuickAddColumns",
+      "title": "Configure Quick-Add Columns",
+      "subtitle": "monday.com",
+      "description": "Choose which columns and default values appear when Quick-adding an item",
+      "mode": "view",
+      "keywords": [
+        "configure",
+        "columns",
+        "defaults",
+        "quick add"
       ]
     }
   ],
@@ -70,6 +73,14 @@
       "title": "monday.com API Token",
       "description": "You can get a token on your monday account's 'Developer' section (or going to `/apps/manage/tokens` under your monday account)",
       "placeholder": "ey...Xx"
+    },
+    {
+      "name": "quickAddBoardId",
+      "type": "textfield",
+      "required": true,
+      "title": "Quick-add Board ID",
+      "description": "ID of the board to quick-add items to. Used by both Quick-add an Item and Configure Quick-add Columns.",
+      "placeholder": "00000000"
     }
   ],
   "dependencies": {

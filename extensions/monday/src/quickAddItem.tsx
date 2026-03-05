@@ -1,13 +1,14 @@
 import { Form, getPreferenceValues } from "@raycast/api";
 import { getBoardAndUser } from "./lib/api";
-import AddItem from "./addItem";
 import { ErrorView } from "./lib/helpers";
 import { useCachedPromise } from "@raycast/utils";
+// CUSTOM: Use column-aware quick-add form
+import QuickAddItemWithColumns from "./custom/commands/quickAddItemWithColumns";
 
 export default function QuickAddItem() {
   const { data: board, error } = useCachedPromise(async () => {
-    const boardId =
-      getPreferenceValues<Preferences.QuickAddItem>().quickAddBoardId;
+    // CUSTOM: quickAddBoardId moved to global preferences
+    const boardId = getPreferenceValues<Preferences>().quickAddBoardId;
     const response = await getBoardAndUser(+boardId);
     if (!response.boards.length) throw "Board not found";
     return response.boards[0];
@@ -20,7 +21,8 @@ export default function QuickAddItem() {
       />
     );
   } else if (board) {
-    return <AddItem board={board} />;
+    // CUSTOM: Delegate to column-aware form instead of plain AddItem
+    return <QuickAddItemWithColumns board={board} />;
   } else {
     return <Form isLoading={true}></Form>;
   }
