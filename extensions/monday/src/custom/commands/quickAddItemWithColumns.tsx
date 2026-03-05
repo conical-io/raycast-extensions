@@ -16,6 +16,7 @@ import { Board, Group, User } from "../../lib/models";
 import { getGroups, getTeam } from "../../lib/api";
 import {
   addItemWithColumns,
+  createUpdate,
   getLinkedBoardItems,
   LinkedItem,
 } from "../api/boardColumnsApi";
@@ -33,6 +34,7 @@ import ConfigureQuickAddColumns from "./configureQuickAddColumns";
 type FormValues = {
   name: string;
   group: string;
+  update: string;
   [key: string]: string;
 };
 
@@ -190,6 +192,9 @@ export default function QuickAddItemWithColumns({ board }: { board: Board }) {
           ))}
         </>
       )}
+
+      <Form.Separator />
+      <Form.TextArea id="update" title="Update / Note" placeholder="Optional note to add to the item after creation" />
     </Form>
   );
 
@@ -205,7 +210,7 @@ export default function QuickAddItemWithColumns({ board }: { board: Board }) {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
 
-      const { name, group: groupId, ...rest } = formValues;
+      const { name, group: groupId, update: updateText, ...rest } = formValues;
       let itemId: number;
 
       if (enabledColumns.length > 0) {
@@ -224,6 +229,10 @@ export default function QuickAddItemWithColumns({ board }: { board: Board }) {
         itemId = await addItemWithColumns(boardId, groupId, name, columnValues);
       } else {
         itemId = await addItem(boardId, groupId, name);
+      }
+
+      if (updateText && updateText.trim()) {
+        await createUpdate(itemId, updateText.trim());
       }
 
       const itemLink = await generateItemLink(boardId, itemId);

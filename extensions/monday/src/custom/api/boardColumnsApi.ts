@@ -46,6 +46,23 @@ export async function getLinkedBoardItems(
     : [];
 }
 
+export async function createUpdate(
+  itemId: number,
+  body: string
+): Promise<void> {
+  const escapedBody = body.replace(/"/g, '\\"');
+  await runGraphQLQuery(`
+    mutation {
+      create_update(
+        item_id: ${itemId},
+        body: "${escapedBody}"
+      ) {
+        id
+      }
+    }
+  `);
+}
+
 export async function addItemWithColumns(
   boardId: number,
   groupId: string,
